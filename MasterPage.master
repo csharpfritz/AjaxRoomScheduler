@@ -1,0 +1,64 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Hotel Room Scheduler - <%= Context.Items["Title"].ToString() %></title>
+	<telerik:RadStyleSheetManager id="RadStyleSheetManager1" runat="server" />
+    <link href="/css/style.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+
+    <form id="form1" runat="server">
+
+    <div id="header" runat="server">
+
+        <div id="logo"></div>
+
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server">
+		<Scripts>
+			<asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js" />
+			<asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js" />
+			<asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js" />
+		</Scripts>
+	</telerik:RadScriptManager>
+
+    <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server">
+	</telerik:RadAjaxManager>
+
+    </div>
+    
+    <telerik:RadMenu ID="siteMenu" runat="server" Width="100%">
+        <Items>
+            <telerik:RadMenuItem runat="server" NavigateUrl="~/Default.aspx" Text="Home" AccessKey="H">
+            </telerik:RadMenuItem>
+            <telerik:RadMenuItem runat="server" NavigateUrl="/Rooms/Default.aspx" Text="Rooms" AccessKey="R">
+            </telerik:RadMenuItem>
+            <telerik:RadMenuItem runat="server" Text="Guests" AccessKey="G">
+            </telerik:RadMenuItem>
+            <telerik:RadMenuItem runat="server" Text="Admin" AccessKey="A">
+            </telerik:RadMenuItem>
+            <telerik:RadMenuItem runat="server" Text="Search">
+            </telerik:RadMenuItem>
+        </Items>
+
+    </telerik:RadMenu>
+
+    <div>
+        <asp:ContentPlaceHolder id="body" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+
+    <div id="footer">
+
+        Sample Project - Not Intended for Production Use - Originally written by <a href="http://csharpfritz.com/about">Jeffrey T. Fritz</a>
+
+    </div>
+
+</body>
+</html>
