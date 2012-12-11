@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="AjaxRoomScheduler.Layout" %>
 
 <!DOCTYPE html>
 
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    <form id="form1" runat="server">
+    <form id="theForm" runat="server">
 
     <div id="header" runat="server">
 
@@ -31,34 +31,54 @@
 
     </div>
     
-    <telerik:RadMenu ID="siteMenu" runat="server" Width="100%">
+    <telerik:RadMenu ID="siteMenu" runat="server" Width="100%" Skin="MetroTouch">
         <Items>
             <telerik:RadMenuItem runat="server" NavigateUrl="~/Default.aspx" Text="Home" AccessKey="H">
             </telerik:RadMenuItem>
             <telerik:RadMenuItem runat="server" NavigateUrl="/Rooms/Default.aspx" Text="Rooms" AccessKey="R">
+                <Items>
+                    <telerik:RadMenuItem runat="server" Text="Reserve a Room">
+                    </telerik:RadMenuItem>
+                    <telerik:RadMenuItem runat="server" Text="Check Availability">
+                    </telerik:RadMenuItem>
+                </Items>
             </telerik:RadMenuItem>
             <telerik:RadMenuItem runat="server" Text="Guests" AccessKey="G">
+                <Items>
+                    <telerik:RadMenuItem runat="server" Text="Check In">
+                    </telerik:RadMenuItem>
+                    <telerik:RadMenuItem runat="server" Text="Check Out">
+                    </telerik:RadMenuItem>
+                    <telerik:RadMenuItem runat="server" Text="Search">
+                    </telerik:RadMenuItem>
+                </Items>
             </telerik:RadMenuItem>
             <telerik:RadMenuItem runat="server" Text="Admin" AccessKey="A">
-            </telerik:RadMenuItem>
-            <telerik:RadMenuItem runat="server" Text="Search">
+                <Items>
+                    <telerik:RadMenuItem runat="server" Text="Maintain Rooms">
+                    </telerik:RadMenuItem>
+                </Items>
             </telerik:RadMenuItem>
         </Items>
 
     </telerik:RadMenu>
+
+        <div class="breadcrumb">
+            <telerik:RadSiteMap ID="breadCrumbSiteMap" runat="server" DataTextField="Text" DataNavigateUrlField="NavigateUrl">
+                <DefaultLevelSettings ListLayout-RepeatDirection="Horizontal" SeparatorText="-" Layout="Flow" />
+            </telerik:RadSiteMap>
+        </div>
 
     <div>
         <asp:ContentPlaceHolder id="body" runat="server">
         
         </asp:ContentPlaceHolder>
     </div>
+
     </form>
 
-    <div id="footer">
-
-        Sample Project - Not Intended for Production Use - Originally written by <a href="http://csharpfritz.com/about">Jeffrey T. Fritz</a>
-
-    </div>
+    
+    <script src="scripts/jquery-1.8.3.min.js"></script>
 
 </body>
 </html>
