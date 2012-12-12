@@ -8,4 +8,10 @@
 
     protected global::Telerik.Web.UI.RadAjaxManager RadAjaxManager1;
 
+    protected Telerik.Web.UI.RadRadialGauge occupancyGuage;
+
+    protected System.Web.UI.LiteralControl occupancyPctLabel;
+
+    protected Telerik.Web.UI.RadGrid currentGuestsGrid;
+
 }

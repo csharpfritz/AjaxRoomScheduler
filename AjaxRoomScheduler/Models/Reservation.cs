@@ -1,10 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AjaxRoomScheduler.Models
 {
     public class Reservation
     {
+
+        public Reservation()
+        {
+            Charges = new List<RoomCharge>();
+        }
+        
         public int ReservationID { get; set; }
 
         [Required]
@@ -21,5 +28,9 @@ namespace AjaxRoomScheduler.Models
 
         [Required]
         public DateTime BookingDateTime { get; set; }
+
+        public List<RoomCharge> Charges { get; set; }
+
     }
+
 }
