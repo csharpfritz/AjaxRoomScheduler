@@ -80,5 +80,7 @@
     
     <script src="scripts/jquery-1.8.3.min.js"></script>
 
+    <asp:ContentPlaceHolder runat="server" ID="afterScripts"></asp:ContentPlaceHolder>
+
 </body>
 </html>

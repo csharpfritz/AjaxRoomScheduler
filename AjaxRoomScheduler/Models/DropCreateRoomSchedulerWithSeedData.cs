@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -22,7 +23,7 @@ namespace AjaxRoomScheduler.Models
 
             var rdm = new Random();
 
-            int roomId = rdm.Next(1, 20);
+            int roomId = rdm.Next(1, 10);
             context.Reservations.Add(new Reservation
             {
                 ReservationID = 1,
@@ -30,10 +31,15 @@ namespace AjaxRoomScheduler.Models
                 Room = context.Rooms.First(r => r.RoomID == roomId),
                 ArrivalDate = DateTime.Today.AddDays(-1),
                 BookingDateTime = DateTime.Now.AddMonths(-1),
-                DepartureDate = DateTime.Today.AddDays(1)
+                DepartureDate = DateTime.Today.AddDays(1),
+                Charges = new List<RoomCharge>()
+                {
+                    new RoomCharge {RoomChargeId=1, Description="Room Charge (3 days)", Value=395.95M},
+                    new RoomCharge {RoomChargeId=2, Description="Dinner", Value=48.95M}
+                }
             });
 
-            roomId = rdm.Next(21, 30);
+            roomId = rdm.Next(11, 20);
             context.Reservations.Add(new Reservation
             {
                 ReservationID = 2,
@@ -44,7 +50,7 @@ namespace AjaxRoomScheduler.Models
                 DepartureDate = DateTime.Today.AddDays(2)
             });
 
-            roomId = rdm.Next(31, 50);
+            roomId = rdm.Next(21, 30);
             context.Reservations.Add(new Reservation
             {
                 ReservationID = 3,
@@ -55,7 +61,7 @@ namespace AjaxRoomScheduler.Models
                 DepartureDate = DateTime.Today
             });
 
-            roomId = rdm.Next(51, 70);
+            roomId = rdm.Next(31, 40);
             context.Reservations.Add(new Reservation
             {
                 ReservationID = 4,
@@ -84,7 +90,7 @@ namespace AjaxRoomScheduler.Models
         {
             var bedTypes = new[] { "2 TWIN", "QUEEN", "KING" };
 
-            for (int floor = 1; floor <= 10; floor++)
+            for (int floor = 1; floor <= 4; floor++)
             {
                 for (int roomNum = 1; roomNum <= 10; roomNum++)
                 {
