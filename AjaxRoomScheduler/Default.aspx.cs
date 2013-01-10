@@ -17,22 +17,39 @@ namespace AjaxRoomScheduler
 {
     public partial class Default : System.Web.UI.Page 
     {
-        private RoomSchedulerContext _ThisContext;
 
         protected override void OnInit(EventArgs e)
         {
             Context.Items["Title"] = "Home";
 
-            this._ThisContext = new RoomSchedulerContext();
-
             base.OnInit(e);
         }
 
+        private RoomSchedulerContext _ThisContext;
+
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            // Begin a data context - connection to the database
+            this._ThisContext = new RoomSchedulerContext();
+
             SetTodaysOccupancyPct();
         }
    
+        private void SetTodaysOccupancyPct()
+        {
+            var totalRooms = (decimal)_ThisContext.Rooms.Count();
+            var beginDay = DateTime.Today;
+            var endDay = DateTime.Today.AddDays(1).AddSeconds(-1);
+            var roomsOccupied = _ThisContext.Reservations.Where(r => 
+                r.ArrivalDate < endDay && r.DepartureDate >= beginDay)
+                .Count();
+            var todaysOccupancyPct = roomsOccupied / totalRooms;
+            this.occupancyGuage.Pointer.Value = todaysOccupancyPct * 100;
+            occupancyPctLabel.Text = string.Format("{0} occupied - {1} rooms available", todaysOccupancyPct.ToString("0.0%"), totalRooms-roomsOccupied);
+        }
+
+
         private void SetTodaysGuests()
         {
             var beginDay = DateTime.Today;
@@ -47,19 +64,8 @@ namespace AjaxRoomScheduler
 
             currentGuestsGrid.DataSource = todaysRes.ToList();
         }
-   
-        private void SetTodaysOccupancyPct()
-        {
-            var totalRooms = (decimal)_ThisContext.Rooms.Count();
-            var beginDay = DateTime.Today;
-            var endDay = DateTime.Today.AddDays(1).AddSeconds(-1);
-            var roomsOccupied = _ThisContext.Reservations.Where(r => r.ArrivalDate < endDay && r.DepartureDate >= beginDay).Count();
-            TodaysOccupancyPct = roomsOccupied / totalRooms;
-            this.occupancyGuage.Pointer.Value = TodaysOccupancyPct * 100;
-            occupancyPctLabel.Text = TodaysOccupancyPct.ToString("0.0%");
-        }
 
-        public decimal TodaysOccupancyPct { get; set; }
+        //public decimal TodaysOccupancyPct { get; set; }
 
         //protected RadRadialGauge occupancyGuage;
 
@@ -68,35 +74,5 @@ namespace AjaxRoomScheduler
             SetTodaysGuests();
         }
 
-        protected void currentGuestsGrid_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Debug.WriteLine("Selected a guest: ");
-            Debug.WriteLine(e);
-        }
-
-        private void DisplayReservationDetails(int reservationId)
-        {
-            var res = _ThisContext.Reservations
-                                  .Include("Guest")
-                                  .Include("Room")
-                                  .Include("Charges")
-                                  .FirstOrDefault(r => r.ReservationID == reservationId);
-
-            // Exit not if there are no reservations with the id requested
-            if (res == null)
-                return;
-
-            this.txtFirstName.Text = res.Guest.FirstName;
-            this.txtLastName.Text = res.Guest.LastName;
-            this.assignedRoom.Text = res.Room.Address;
-
-            this.chargesGrid.DataSource = res.Charges;
-            this.chargesGrid.DataBind();
-
-        }
-        protected void guestDetailsPanel_Load(object sender, EventArgs e)
-        {
-            DisplayReservationDetails(-1);
-        }
 }
 }

@@ -4,40 +4,44 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Hotel Room Scheduler - <%= Context.Items["Title"].ToString() %></title>
-	<telerik:RadStyleSheetManager id="RadStyleSheetManager1" runat="server" />
-    <link href="/css/style.css" rel="stylesheet" />
-    <asp:ContentPlaceHolder id="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <title>Hotel Room Scheduler</title>
+    <telerik:RadStyleSheetManager runat="server" ID="stylesheetManager" OutputCompression="AutoDetect" EnableHandlerDetection="true">
+        <StyleSheets>
+            <telerik:StyleSheetReference IsCommonCss="true" Path="~/css/style.css" />
+        </StyleSheets>
+    </telerik:RadStyleSheetManager>
+    <asp:ContentPlaceHolder id="head" runat="server" />
 </head>
 <body>
 
     <form id="theForm" runat="server">
 
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" EnableScriptCombine="true" LoadScriptsBeforeUI="false">
+        <Scripts>
+            <telerik:RadScriptReference Path="~/scripts/jquery-1.8.3.min.js" />
+            <telerik:RadScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js" />
+            <telerik:RadScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js" />
+            <telerik:RadScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js" />
+        </Scripts>
+    </telerik:RadScriptManager>
+
+    <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server"></telerik:RadAjaxManager>
+
+
     <div id="header" runat="server">
 
         <div id="logo"></div>
 
-    <telerik:RadScriptManager ID="RadScriptManager1" runat="server">
-		<Scripts>
-			<asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.Core.js" />
-			<asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQuery.js" />
-			<asp:ScriptReference Assembly="Telerik.Web.UI" Name="Telerik.Web.UI.Common.jQueryInclude.js" />
-		</Scripts>
-	</telerik:RadScriptManager>
-
-    <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server">
-	</telerik:RadAjaxManager>
-
     </div>
-    
+ 
+    <!-- Menu goes here -->
     <telerik:RadMenu ID="siteMenu" runat="server" Width="100%" Skin="MetroTouch">
         <Items>
             <telerik:RadMenuItem runat="server" NavigateUrl="~/Default.aspx" Text="Home" AccessKey="H">
             </telerik:RadMenuItem>
-            <telerik:RadMenuItem runat="server" NavigateUrl="/Rooms/Default.aspx" Text="Rooms" AccessKey="R">
+            <telerik:RadMenuItem runat="server" Text="Rooms" AccessKey="R">
                 <Items>
-                    <telerik:RadMenuItem runat="server" Text="Reserve a Room">
+                    <telerik:RadMenuItem runat="server" Text="Reserve a Room" NavigateUrl="/Rooms/Default.aspx">
                     </telerik:RadMenuItem>
                     <telerik:RadMenuItem runat="server" Text="Check Availability">
                     </telerik:RadMenuItem>
@@ -61,13 +65,17 @@
             </telerik:RadMenuItem>
         </Items>
 
+        <ExpandAnimation Type="InOutBounce" />
+        <CollapseAnimation Type="InOutBounce" />
+
     </telerik:RadMenu>
 
-        <div class="breadcrumb">
-            <telerik:RadSiteMap ID="breadCrumbSiteMap" runat="server" DataTextField="Text" DataNavigateUrlField="NavigateUrl">
-                <DefaultLevelSettings ListLayout-RepeatDirection="Horizontal" SeparatorText="-" Layout="Flow" />
-            </telerik:RadSiteMap>
-        </div>
+
+    <div class="breadcrumb">
+        <telerik:RadSiteMap ID="breadCrumbSiteMap" runat="server" DataTextField="Text" DataNavigateUrlField="NavigateUrl">
+            <DefaultLevelSettings ListLayout-RepeatDirection="Horizontal" SeparatorText="-" Layout="Flow" />
+        </telerik:RadSiteMap>
+    </div>
 
     <div>
         <asp:ContentPlaceHolder id="body" runat="server">
@@ -78,9 +86,5 @@
     </form>
 
     
-    <script src="scripts/jquery-1.8.3.min.js"></script>
-
-    <asp:ContentPlaceHolder runat="server" ID="afterScripts"></asp:ContentPlaceHolder>
-
 </body>
 </html>

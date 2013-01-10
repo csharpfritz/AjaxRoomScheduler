@@ -13,13 +13,13 @@ namespace AjaxRoomScheduler {
     public partial class Layout {
         
         /// <summary>
-        /// RadStyleSheetManager1 control.
+        /// stylesheetManager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadStyleSheetManager RadStyleSheetManager1;
+        protected global::Telerik.Web.UI.RadStyleSheetManager stylesheetManager;
         
         /// <summary>
         /// head control.
@@ -40,15 +40,6 @@ namespace AjaxRoomScheduler {
         protected global::System.Web.UI.HtmlControls.HtmlForm theForm;
         
         /// <summary>
-        /// header control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl header;
-        
-        /// <summary>
         /// RadScriptManager1 control.
         /// </summary>
         /// <remarks>
@@ -65,6 +56,15 @@ namespace AjaxRoomScheduler {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Telerik.Web.UI.RadAjaxManager RadAjaxManager1;
+        
+        /// <summary>
+        /// header control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl header;
         
         /// <summary>
         /// siteMenu control.
@@ -92,14 +92,5 @@ namespace AjaxRoomScheduler {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder body;
-        
-        /// <summary>
-        /// afterScripts control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder afterScripts;
     }
 }

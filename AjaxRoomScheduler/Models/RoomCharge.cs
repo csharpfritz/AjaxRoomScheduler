@@ -8,4 +8,5 @@ namespace AjaxRoomScheduler.Models
 
         public decimal Value { get; set; }
     }
+
 }
