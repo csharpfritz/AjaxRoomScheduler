@@ -74,5 +74,75 @@ namespace AjaxRoomScheduler
             SetTodaysGuests();
         }
 
+        protected void guestDetailsPanel_Load(object sender, EventArgs e)
+        {
+            DisplayReservationDetails(-1);
+        }
+
+        private void DisplayReservationDetails(int reservationId)
+        {
+            var res = _ThisContext.Reservations
+                                  .Include("Guest")
+                                  .Include("Room")
+                                  .Include("Charges")
+                                  .FirstOrDefault(r => r.ReservationID == reservationId);
+
+            // Exit not if there are no reservations with the id requested
+            if (res == null)
+                return;
+
+            ReservationDetailsAssignedRoom = string.Format("{0} - Type: {1}", res.Room.Address, res.Room.BedType.ToString());
+            ReservationDetailsFirstName = res.Guest.FirstName;
+            ReservationDetailsLastName = res.Guest.LastName;
+
+            chargesGrid.DataSource = res.Charges.Select(c => new {
+                Description = c.Description,
+                Value=c.Value.ToString("$0.00")
+            });
+            chargesGrid.DataBind();
+
+        }
+
+        public string ReservationDetailsLastName
+        {
+            get { return txtLastName.Text; }
+            set { txtLastName.Text = value; }
+        }
+
+        public string ReservationDetailsFirstName
+        {
+            get { return txtFirstName.Text; }
+            set { txtFirstName.Text = value; }
+        }
+
+        public string ReservationDetailsAssignedRoom
+        {
+            get { return assignedRoom.Text; }
+            set { assignedRoom.Text = value; }
+        }
+
+        public string ReservationNotes
+        {
+            get { return notesEditor.Text; }
+            set { notesEditor.Text = value; }
+        }
+
+        protected void currentGuestsGrid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.txtLastName.Text = "Loaded";
+            this.txtFirstName.Text = DateTime.Now.ToString();
+        }
+
+        protected void currentGuestsGrid_ItemCommand(object sender, GridCommandEventArgs e)
+        {
+            this.txtLastName.Text = "Item Loaded";
+            this.txtFirstName.Text = DateTime.Now.ToString();
+
+            var dataItem = e.Item as GridDataItem;
+            this.DisplayReservationDetails(Convert.ToInt32( dataItem.GetDataKeyValue("ResId")));
+            dataItem.Selected = true;
+
+        }
+
 }
 }

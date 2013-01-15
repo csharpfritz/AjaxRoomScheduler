@@ -85,7 +85,6 @@
 
     </form>
 
-    <asp:ContentPlaceHolder ID="afterScripts" runat="server"></asp:ContentPlaceHolder>
     
 </body>
 </html>

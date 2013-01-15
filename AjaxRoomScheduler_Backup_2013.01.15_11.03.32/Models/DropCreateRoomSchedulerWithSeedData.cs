@@ -34,8 +34,8 @@ namespace AjaxRoomScheduler.Models
                 DepartureDate = DateTime.Today.AddDays(1),
                 Charges = new List<RoomCharge>()
                 {
-                    new RoomCharge {Description="Room Charge (3 days)", Value=395.95M},
-                    new RoomCharge {Description="Dinner", Value=48.95M}
+                    new RoomCharge {RoomChargeId=1, Description="Room Charge (3 days)", Value=395.95M},
+                    new RoomCharge {RoomChargeId=2, Description="Dinner", Value=48.95M}
                 }
             });
 
@@ -47,13 +47,7 @@ namespace AjaxRoomScheduler.Models
                 Room = context.Rooms.First(r => r.RoomID == roomId),
                 ArrivalDate = DateTime.Today,
                 BookingDateTime = DateTime.Now.AddMonths(-1).AddDays(rdm.Next(10)),
-                DepartureDate = DateTime.Today.AddDays(2),
-                Charges = new List<RoomCharge>()
-                {
-                    new RoomCharge {Description="Room Charge (2 days)", Value=295.95M},
-                    new RoomCharge {Description="Dinner", Value=48.95M},
-                    new RoomCharge {Description="Spa", Value=79.95M}
-                }
+                DepartureDate = DateTime.Today.AddDays(2)
             });
 
             roomId = rdm.Next(21, 30);
@@ -64,12 +58,7 @@ namespace AjaxRoomScheduler.Models
                 Room = context.Rooms.First(r => r.RoomID == roomId),
                 ArrivalDate = DateTime.Today.AddDays(-2),
                 BookingDateTime = DateTime.Now.AddMonths(-1).AddDays(rdm.Next(10)),
-                DepartureDate = DateTime.Today,
-                Charges = new List<RoomCharge>()
-                {
-                    new RoomCharge {Description="Room Charge (2 days)", Value=295.95M},
-                    new RoomCharge {Description="Dinner", Value=48.95M}
-                }
+                DepartureDate = DateTime.Today
             });
 
             roomId = rdm.Next(31, 40);
@@ -80,12 +69,7 @@ namespace AjaxRoomScheduler.Models
                 Room = context.Rooms.First(r => r.RoomID == roomId),
                 ArrivalDate = DateTime.Today.AddDays(-3),
                 BookingDateTime = DateTime.Now.AddMonths(-1).AddDays(rdm.Next(20)),
-                DepartureDate = DateTime.Today.AddDays(1),
-                Charges = new List<RoomCharge>()
-                {
-                    new RoomCharge {Description="Room Charge (4 days)", Value=495.95M},
-                    new RoomCharge {Description="Dinner", Value=48.95M}
-                }
+                DepartureDate = DateTime.Today.AddDays(1)
             });
 
 
