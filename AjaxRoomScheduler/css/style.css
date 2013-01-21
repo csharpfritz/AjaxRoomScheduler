@@ -1,6 +1,7 @@
 ﻿/** MASTER PAGE LAYOUT FORMATTING */
 body {
     margin: 0px;
+    overflow-x: auto;
 }
 
 #header {
@@ -34,9 +35,52 @@ body {
 }
 
 .detailsPanel {
-    position: relative;
-    width: 100%;
+    width: 600px;
     margin-left: 320px;
     border-top: 1px solid gray;
     padding: 3px 3px 3px 15px;
+}
+
+.NoReservationSelected {
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -100px 0 0 -50px;    
+    font-size: 16pt;
+    font-family: Arial;
+    font-weight: bold;
+    color: gray;
+    display: block;
+}
+
+.detailsPanel H3, .detailsPanel H4 {
+    margin: 2px;    
+    /*font-size: larger;*/
+    font-family: arial;
+}
+
+.detailsPanel LABEL {
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 10pt;
+    color: #777;
+}
+
+#chargesHeader {
+    position: relative;
+    width: 500px;
+}
+
+#chargesHeader H4 {
+    display: inline;
+}
+
+#chargesHeader H4:first-child {
+    float: left;
+}
+
+#chargesHeader H4:last-child {
+    float: right;
 }

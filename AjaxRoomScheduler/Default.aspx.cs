@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,14 +19,29 @@ namespace AjaxRoomScheduler
     public partial class Default : System.Web.UI.Page 
     {
 
+        //protected Telerik.Web.UI.RadAjaxLoadingPanel loadingPanel;
+
         protected override void OnInit(EventArgs e)
         {
             Context.Items["Title"] = "Home";
+
+            ToggleReservationDetailsVisibility(false);
 
             base.OnInit(e);
         }
 
         private RoomSchedulerContext _ThisContext;
+
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+
+            var ajaxMgr = RadAjaxManager.GetCurrent(this);
+            ajaxMgr.AjaxRequest += ajaxMgr_AjaxRequest;
+
+            ajaxMgr.AjaxSettings.AddAjaxSetting(ajaxMgr, guestDetailsPanel);
+
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,7 +51,7 @@ namespace AjaxRoomScheduler
 
             SetTodaysOccupancyPct();
         }
-   
+
         private void SetTodaysOccupancyPct()
         {
             var totalRooms = (decimal)_ThisContext.Rooms.Count();
@@ -49,13 +65,19 @@ namespace AjaxRoomScheduler
             occupancyPctLabel.Text = string.Format("{0} occupied - {1} rooms available", todaysOccupancyPct.ToString("0.0%"), totalRooms-roomsOccupied);
         }
 
+        protected void currentGuestsGrid_NeedDataSource(object sender, 
+            GridNeedDataSourceEventArgs e)
+        {
+            SetTodaysGuests();
+        }
 
         private void SetTodaysGuests()
         {
             var beginDay = DateTime.Today;
             var endDay = DateTime.Today.AddDays(1).AddSeconds(-1);
-            var todaysRes = _ThisContext.Reservations.Where(r => r.ArrivalDate < endDay && r.DepartureDate >= beginDay).Select(r => new
-            {
+            var todaysRes = _ThisContext.Reservations
+                .Where(r => r.ArrivalDate < endDay && r.DepartureDate >= beginDay)
+                .Select(r => new {
                 ResId = r.ReservationID,
                 RoomNum = r.Room.Address,
                 GuestName = r.Guest.FirstName + " " + r.Guest.LastName,
@@ -63,20 +85,6 @@ namespace AjaxRoomScheduler
             });
 
             currentGuestsGrid.DataSource = todaysRes.ToList();
-        }
-
-        //public decimal TodaysOccupancyPct { get; set; }
-
-        //protected RadRadialGauge occupancyGuage;
-
-        protected void currentGuestsGrid_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
-        {
-            SetTodaysGuests();
-        }
-
-        protected void guestDetailsPanel_Load(object sender, EventArgs e)
-        {
-            DisplayReservationDetails(-1);
         }
 
         private void DisplayReservationDetails(int reservationId)
@@ -95,13 +103,21 @@ namespace AjaxRoomScheduler
             ReservationDetailsFirstName = res.Guest.FirstName;
             ReservationDetailsLastName = res.Guest.LastName;
 
-            chargesGrid.DataSource = res.Charges.Select(c => new {
+            var charges = res.Charges.Select(c => new
+            {
                 Description = c.Description,
-                Value=c.Value.ToString("$0.00")
+                //Charged = c.Value.ToString("$0.00"),
+                Value = c.Value
             });
+            chargesGrid.DataSource = charges;
+            chargesGrid.Visible = true;
             chargesGrid.DataBind();
 
+            ReservationTotalCharges = charges.Sum(a => a.Value).ToString("0.00");
+            ReservationNotes = res.Notes;
         }
+
+        #region Proxy Properties to Visual Controls
 
         public string ReservationDetailsLastName
         {
@@ -123,24 +139,40 @@ namespace AjaxRoomScheduler
 
         public string ReservationNotes
         {
-            get { return notesEditor.Text; }
-            set { notesEditor.Text = value; }
+            get { return notesEditor.Content; }
+            set { notesEditor.Content = value; }
         }
 
-        protected void currentGuestsGrid_SelectedIndexChanged(object sender, EventArgs e)
+        public string ReservationTotalCharges
         {
-            this.txtLastName.Text = "Loaded";
-            this.txtFirstName.Text = DateTime.Now.ToString();
+            set
+            {
+                lTotalCharges.Text = string.Format("<h4>Total: ${0}</h4>", value);
+            }
         }
 
-        protected void currentGuestsGrid_ItemCommand(object sender, GridCommandEventArgs e)
-        {
-            this.txtLastName.Text = "Item Loaded";
-            this.txtFirstName.Text = DateTime.Now.ToString();
+        #endregion
 
-            var dataItem = e.Item as GridDataItem;
-            this.DisplayReservationDetails(Convert.ToInt32( dataItem.GetDataKeyValue("ResId")));
-            dataItem.Selected = true;
+        void ajaxMgr_AjaxRequest(object sender, AjaxRequestEventArgs e)
+        {
+
+            int resId = Convert.ToInt32(e.Argument);
+            this.DisplayReservationDetails(resId);
+            ToggleReservationDetailsVisibility(true);
+
+        }
+
+        /// <summary>
+        /// Show / hide the reservation details controls
+        /// </summary>
+        /// <param name="displayControls">TRUE: Show details controls</param>
+        private void ToggleReservationDetailsVisibility(bool displayControls)
+        {
+            var controlsToHide = guestDetailsPanel.Controls;
+            foreach (Control ctl in controlsToHide)
+            {
+                ctl.Visible = (displayControls) ? (ctl.ID != "lNoReservationSelected") : (ctl.ID == "lNoReservationSelected");
+            }
 
         }
 

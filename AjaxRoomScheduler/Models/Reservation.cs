@@ -31,6 +31,8 @@ namespace AjaxRoomScheduler.Models
 
         public List<RoomCharge> Charges { get; set; }
 
+        public string Notes { get; set; }
+
     }
 
 }

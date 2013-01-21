@@ -53,7 +53,8 @@ namespace AjaxRoomScheduler.Models
                     new RoomCharge {Description="Room Charge (2 days)", Value=295.95M},
                     new RoomCharge {Description="Dinner", Value=48.95M},
                     new RoomCharge {Description="Spa", Value=79.95M}
-                }
+                },
+                Notes = "This guest leaves their room a mess.  Housekeeping is not happy"
             });
 
             roomId = rdm.Next(21, 30);
@@ -85,7 +86,8 @@ namespace AjaxRoomScheduler.Models
                 {
                     new RoomCharge {Description="Room Charge (4 days)", Value=495.95M},
                     new RoomCharge {Description="Dinner", Value=48.95M}
-                }
+                },
+                Notes = "This guest is a big spender.  Let's treat them well..."
             });
 
 

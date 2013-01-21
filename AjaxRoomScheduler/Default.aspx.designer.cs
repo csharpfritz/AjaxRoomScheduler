@@ -17,7 +17,7 @@ namespace AjaxRoomScheduler
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadAjaxManagerProxy radProxy;
+        protected global::Telerik.Web.UI.RadAjaxManagerProxy ajaxProxy;
      
         /// <summary>
         /// occupancyGuage control.
@@ -144,6 +144,9 @@ namespace AjaxRoomScheduler
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal lCharges;
+
+        protected global::System.Web.UI.WebControls.Literal lTotalCharges;
+
      
         /// <summary>
         /// chargesGrid control.

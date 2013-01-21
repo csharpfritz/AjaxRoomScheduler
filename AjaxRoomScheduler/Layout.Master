@@ -25,7 +25,7 @@
         </Scripts>
     </telerik:RadScriptManager>
 
-    <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server"></telerik:RadAjaxManager>
+    <telerik:RadAjaxManager ID="ajaxMgr" runat="server" ClientIDMode="AutoID"></telerik:RadAjaxManager>
 
 
     <div id="header" runat="server">
