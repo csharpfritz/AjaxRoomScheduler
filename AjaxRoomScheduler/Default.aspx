@@ -9,11 +9,6 @@
                     <telerik:AjaxUpdatedControl ControlID="currentGuestsGrid" LoadingPanelID="loadingPanel" />
                 </UpdatedControls>
             </telerik:AjaxSetting>
-<%--            <telerik:AjaxSetting AjaxControlID="">
-                <UpdatedControls>
-                    <telerik:AjaxUpdatedControl ControlID="guestDetailsPanel" LoadingPanelID="loadingPanel" />
-                </UpdatedControls>
-            </telerik:AjaxSetting>--%>
         </AjaxSettings>
     </telerik:RadAjaxManagerProxy>
 
