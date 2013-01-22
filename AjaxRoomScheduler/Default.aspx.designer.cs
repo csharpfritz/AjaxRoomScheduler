@@ -62,7 +62,7 @@ namespace AjaxRoomScheduler
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadAjaxPanel guestDetailsPanel;
+        protected global::Telerik.Web.UI.RadAjaxPanel reservationDetailsPanel;
      
         /// <summary>
         /// lReservationDetails control.

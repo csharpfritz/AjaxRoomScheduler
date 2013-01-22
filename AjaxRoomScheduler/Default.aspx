@@ -36,72 +36,54 @@
         <%-- Show the cool animations when we reference the server --%>
         <telerik:RadAjaxLoadingPanel runat="server" ID="loadingPanel"></telerik:RadAjaxLoadingPanel>
 
-            <%-- Add Grid Here  --%>
-            <telerik:RadGrid ID="currentGuestsGrid" runat="server" AutoGenerateColumns="False" CellSpacing="0" GridLines="None" AllowSorting="True" OnNeedDataSource="currentGuestsGrid_NeedDataSource">
+        <telerik:RadGrid ID="currentGuestsGrid" runat="server" AutoGenerateColumns="False" 
+            CellSpacing="0" GridLines="None" AllowSorting="True" 
+            OnNeedDataSource="currentGuestsGrid_NeedDataSource">
 
-                <ClientSettings EnableRowHoverStyle="true">
-                    <ClientEvents OnRowClick="currentGuestsGrid_RowClick" />
-                    <Selecting EnableDragToSelectRows="False" AllowRowSelect="true" />
-                    <Scrolling AllowScroll="True" UseStaticHeaders="True" />
-                </ClientSettings>
+            <ClientSettings EnableRowHoverStyle="true">
+                <ClientEvents OnRowClick="currentGuestsGrid_RowClick" />
+                <Selecting EnableDragToSelectRows="False" AllowRowSelect="true" />
+                <Scrolling AllowScroll="True" UseStaticHeaders="True" />
+            </ClientSettings>
 
             <MasterTableView DataKeyNames="ResId" ClientDataKeyNames="ResId">
 
-            <RowIndicatorColumn Visible="True" FilterControlAltText="Filter RowIndicator column">
-            <HeaderStyle Width="20px"></HeaderStyle>
-            </RowIndicatorColumn>
-
-            <ExpandCollapseColumn Visible="True" FilterControlAltText="Filter ExpandColumn column">
-            <HeaderStyle Width="20px"></HeaderStyle>
-            </ExpandCollapseColumn>
-
                 <Columns>
-                    <telerik:GridBoundColumn DataField="ResId" DataType="System.Int32" FilterControlAltText="Filter resID column" UniqueName="ResID" Visible="True" HeaderStyle-Width="0" ItemStyle-Width="0">
-                        <HeaderStyle Width="0px" />
-                        <ItemStyle Width="0px" />
-                    </telerik:GridBoundColumn>
-                    <telerik:GridBoundColumn DataField="RoomNum" FilterControlAltText="Filter room column" HeaderText="Room" UniqueName="room">
+                    <telerik:GridBoundColumn DataField="RoomNum" HeaderText="Room" UniqueName="room">
                         <FooterStyle Width="100px" />
                         <HeaderStyle Width="100px" />
                         <ItemStyle Width="100px" />
                     </telerik:GridBoundColumn>
-                    <telerik:GridBoundColumn DataField="GuestName" FilterControlAltText="Filter column column" SortExpression="SortName" HeaderText="Guest" UniqueName="column">
+                    <telerik:GridBoundColumn DataField="GuestName" SortExpression="SortName" 
+                        HeaderText="Guest" UniqueName="column">
                     </telerik:GridBoundColumn>
-                    <telerik:GridClientSelectColumn FilterControlAltText="Filter select column" UniqueName="select">
-                        <HeaderStyle Width="0px" />
-                        <ItemStyle Width="0px" />
-                    </telerik:GridClientSelectColumn>
-                    <telerik:GridButtonColumn Text="Select" CommandName="selectItem" UniqueName="serverSelect">
-                        <HeaderStyle Width="0px" />
-                        <ItemStyle Width="0px" />
-                    </telerik:GridButtonColumn>
                 </Columns>
 
             </MasterTableView>
 
-            </telerik:RadGrid>
+        </telerik:RadGrid>
 
 
         </div>
 
-    <asp:Panel ID="guestDetailsPanel" runat="server" CssClass="detailsPanel" Visible="true" ClientIDMode="Static" >
+    <asp:Panel ID="reservationDetailsPanel" runat="server" CssClass="detailsPanel" Visible="true" ClientIDMode="Static" >
 
         <asp:Label runat="server" ID="lNoReservationSelected" CssClass="NoReservationSelected" Text="No Reservation Currently Selected"></asp:Label>
 
-        <asp:Literal runat="server" ID="lReservationDetails"><h3 style="text-decoration: underline; margin-bottom: 2px;">Reservation Details</h3></asp:Literal>
+        <asp:Literal runat="server" ID="lReservationDetails"><h3>Reservation Details</h3></asp:Literal>
 
         <asp:Literal runat="server" ID="lDetails"><h4>Guest Details:</h4></asp:Literal>
 
         <table>
             <tr>
                 <td>
-                    <asp:Label runat="server" ID="lblLastName" Width="150" AccessKey="l" AssociatedControlID="txtLastName">Last Name:</asp:Label>
+                    <asp:Label runat="server" ID="lblLastName" Width="150" AssociatedControlID="txtLastName">Last Name:</asp:Label>
                 </td>
                 <td>
                     <telerik:RadTextBox runat="server" ID="txtLastName" Width="150" Enabled="false"></telerik:RadTextBox>
                 </td>
                 <td>
-                    <asp:Label runat="server" ID="lblFirstName" Width="150" AccessKey="f" AssociatedControlID="txtFirstName">First Name:</asp:Label>
+                    <asp:Label runat="server" ID="lblFirstName" Width="150" AssociatedControlID="txtFirstName">First Name:</asp:Label>
                 </td>
                 <td>
                     <telerik:RadTextBox runat="server" ID="txtFirstName" Width="150" Enabled="false"></telerik:RadTextBox>
@@ -109,7 +91,7 @@
             </tr>
             <tr>
                 <td>
-                    <asp:Label runat="server" ID="lblAssignedRoom" AccessKey="o" AssociatedControlID="assignedRoom">Assigned Room:</asp:Label>
+                    <asp:Label runat="server" ID="lblAssignedRoom" AssociatedControlID="assignedRoom">Assigned Room:</asp:Label>
                 </td>
                 <td colspan="3">
                     <asp:label runat="server" ID="assignedRoom"></asp:label>
@@ -122,6 +104,7 @@
             <asp:Literal ID="lTotalCharges" runat="server"><h4>Total: </h4></asp:Literal>
         </div>
         <br />
+        <%-- Editor for Notes goes here --%>
         <telerik:RadGrid ID="chargesGrid" runat="server" Width="500px" Height="200px" Visible="false" AutoGenerateColumns="False" CellSpacing="0" GridLines="None">
 
             <MasterTableView>
@@ -138,10 +121,7 @@
 
         <br />
         <asp:Literal ID="lNotes" runat="server"><h4>Notes:</h4></asp:Literal>
-        <telerik:AccessibleRadEditor runat="server" ID="notesEditor" Height="200" Width="500">
-            <ImageManager EnableImageEditor="False" />
-            <TrackChangesSettings CanAcceptTrackChanges="False" />
-        </telerik:AccessibleRadEditor>
+        <telerik:AccessibleRadEditor runat="server" ID="notesEditor" Height="200" Width="500" />
 
         </asp:Panel>
 
@@ -159,7 +139,7 @@
         function currentGuestsGrid_RowClick(sender, args) {
         	
             var key = args.getDataKeyValue("ResId");
-            $find(controls.ajaxMgr.ClientID).ajaxRequest(key);
+            $find("<%= RadAjaxManager.GetCurrent(this).ClientID %>").ajaxRequest(key);
 
         }
 

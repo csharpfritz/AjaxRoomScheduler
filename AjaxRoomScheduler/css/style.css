@@ -41,6 +41,11 @@ body {
     padding: 3px 3px 3px 15px;
 }
 
+.detailsPanel h3 {
+    text-decoration: underline; 
+    margin-bottom: 2px;
+}
+
 .NoReservationSelected {
     width: 600px;
     height: 600px;

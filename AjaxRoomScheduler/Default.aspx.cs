@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,8 +26,6 @@ namespace AjaxRoomScheduler
         {
             Context.Items["Title"] = "Home";
 
-            ToggleReservationDetailsVisibility(false);
-
             base.OnInit(e);
         }
 
@@ -36,10 +35,12 @@ namespace AjaxRoomScheduler
         {
             base.CreateChildControls();
 
+            ToggleReservationDetailsVisibility(false);
+
             var ajaxMgr = RadAjaxManager.GetCurrent(this);
             ajaxMgr.AjaxRequest += ajaxMgr_AjaxRequest;
 
-            ajaxMgr.AjaxSettings.AddAjaxSetting(ajaxMgr, guestDetailsPanel);
+            ajaxMgr.AjaxSettings.AddAjaxSetting(ajaxMgr, reservationDetailsPanel);
 
         }
 
@@ -68,10 +69,10 @@ namespace AjaxRoomScheduler
         protected void currentGuestsGrid_NeedDataSource(object sender, 
             GridNeedDataSourceEventArgs e)
         {
-            SetTodaysGuests();
+            currentGuestsGrid.DataSource = GetTodaysGuests();
         }
 
-        private void SetTodaysGuests()
+        private IEnumerable GetTodaysGuests()
         {
             var beginDay = DateTime.Today;
             var endDay = DateTime.Today.AddDays(1).AddSeconds(-1);
@@ -84,7 +85,7 @@ namespace AjaxRoomScheduler
                 SortName = string.Concat(r.Guest.LastName, r.Guest.FirstName)
             });
 
-            currentGuestsGrid.DataSource = todaysRes.ToList();
+            return todaysRes.ToList();
         }
 
         private void DisplayReservationDetails(int reservationId)
@@ -99,9 +100,9 @@ namespace AjaxRoomScheduler
             if (res == null)
                 return;
 
-            ReservationDetailsAssignedRoom = string.Format("{0} - Type: {1}", res.Room.Address, res.Room.BedType.ToString());
-            ReservationDetailsFirstName = res.Guest.FirstName;
-            ReservationDetailsLastName = res.Guest.LastName;
+            assignedRoom.Text = string.Format("{0} - Type: {1}", res.Room.Address, res.Room.BedType.ToString());
+            txtFirstName.Text = res.Guest.FirstName;
+            txtLastName.Text = res.Guest.LastName;
 
             var charges = res.Charges.Select(c => new
             {
@@ -113,45 +114,10 @@ namespace AjaxRoomScheduler
             chargesGrid.Visible = true;
             chargesGrid.DataBind();
 
-            ReservationTotalCharges = charges.Sum(a => a.Value).ToString("0.00");
-            ReservationNotes = res.Notes;
+            var totalCharges = charges.Sum(a => a.Value).ToString("0.00");
+            lTotalCharges.Text = string.Format("<h4>Total: ${0}</h4>", totalCharges); 
+            notesEditor.Content = res.Notes;
         }
-
-        #region Proxy Properties to Visual Controls
-
-        public string ReservationDetailsLastName
-        {
-            get { return txtLastName.Text; }
-            set { txtLastName.Text = value; }
-        }
-
-        public string ReservationDetailsFirstName
-        {
-            get { return txtFirstName.Text; }
-            set { txtFirstName.Text = value; }
-        }
-
-        public string ReservationDetailsAssignedRoom
-        {
-            get { return assignedRoom.Text; }
-            set { assignedRoom.Text = value; }
-        }
-
-        public string ReservationNotes
-        {
-            get { return notesEditor.Content; }
-            set { notesEditor.Content = value; }
-        }
-
-        public string ReservationTotalCharges
-        {
-            set
-            {
-                lTotalCharges.Text = string.Format("<h4>Total: ${0}</h4>", value);
-            }
-        }
-
-        #endregion
 
         void ajaxMgr_AjaxRequest(object sender, AjaxRequestEventArgs e)
         {
@@ -168,7 +134,7 @@ namespace AjaxRoomScheduler
         /// <param name="displayControls">TRUE: Show details controls</param>
         private void ToggleReservationDetailsVisibility(bool displayControls)
         {
-            var controlsToHide = guestDetailsPanel.Controls;
+            var controlsToHide = reservationDetailsPanel.Controls;
             foreach (Control ctl in controlsToHide)
             {
                 ctl.Visible = (displayControls) ? (ctl.ID != "lNoReservationSelected") : (ctl.ID == "lNoReservationSelected");
